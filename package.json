@@ -31,7 +31,8 @@
     "lint": "eslint src/",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "chromatic": "chromatic --exit-zero-on-changes"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -93,6 +94,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "chromatic": "^13.3.5",
     "eslint": "^9",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
