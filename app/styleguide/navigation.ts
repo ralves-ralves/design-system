@@ -89,5 +89,20 @@ export const navigation: NavSection[] = [
       { name: "Calendar", href: "/styleguide/components/calendar" },
       { name: "Carousel", href: "/styleguide/components/carousel" },
     ]
+  },
+  {
+    title: "Chat",
+    items: [
+      { name: "Chat Bubble", href: "/styleguide/components/chat-bubble" },
+      { name: "Chat File", href: "/styleguide/components/chat-file" },
+      { name: "Chat Image", href: "/styleguide/components/chat-image" },
+      { name: "Chat Audio", href: "/styleguide/components/chat-audio" },
+      { name: "Chat Transcription", href: "/styleguide/components/chat-transcription" },
+      { name: "Typing Indicator", href: "/styleguide/components/typing-indicator" },
+      { name: "Quick Reply", href: "/styleguide/components/quick-reply" },
+      { name: "SLA Badge", href: "/styleguide/components/sla-badge" },
+      { name: "Conversation Item", href: "/styleguide/components/conversation-item" },
+      { name: "Queue Item", href: "/styleguide/components/queue-item" },
+    ]
   }
 ]

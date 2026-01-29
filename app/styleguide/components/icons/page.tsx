@@ -46,7 +46,6 @@ import {
   Microscope,
   Dna,
   Accessibility,
-  Wheelchair,
   // File & Document
   FileText,
   File,
@@ -103,7 +102,6 @@ const iconCategories = [
       { name: "Microscope", component: Microscope },
       { name: "Dna", component: Dna },
       { name: "Accessibility", component: Accessibility },
-      { name: "Wheelchair", component: Wheelchair },
     ],
   },
   {

@@ -105,7 +105,7 @@ export interface FileUploadProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">,
     VariantProps<typeof fileUploadVariants> {
   /** Accepted file types as MIME → extensions map, or use a HEALTH_FILE_PRESETS key */
-  accept?: Record<string, string[]>
+  accept?: Record<string, string[] | readonly string[]>
   /** Maximum file size in bytes (default 50 MB) */
   maxSize?: number
   /** Maximum number of files (default 10) */
@@ -166,12 +166,12 @@ function getFileIcon(file: File) {
   return File
 }
 
-function getAllowedExtensions(accept?: Record<string, string[]>): string[] {
+function getAllowedExtensions(accept?: Record<string, string[] | readonly string[]>): string[] {
   if (!accept) return []
   return Object.values(accept).flat()
 }
 
-function isFileTypeAllowed(file: File, accept?: Record<string, string[]>): boolean {
+function isFileTypeAllowed(file: File, accept?: Record<string, string[] | readonly string[]>): boolean {
   if (!accept) return true
   const mimeAllowed = Object.keys(accept).some((mime) => {
     if (mime.endsWith("/*")) return file.type.startsWith(mime.replace("/*", "/"))

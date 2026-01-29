@@ -166,7 +166,7 @@ className="bg-ai-gradient-static" // Gradient background without shimmer
 className="text-ai-gradient"    // Gradient text
 ```
 
-### Shadows (use with `shadow-[var(--shadow-*)]`)
+### Shadows (use with shadow-[var(--shadow-TOKEN)])
 
 | Token | Usage |
 |-------|-------|
