@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { FileUpload } from "@/components/ui/file-upload"
 import { Button } from "@/components/ui/button"
-import { AlertCircle, Download } from "lucide-react"
+import { AlertCircle } from "lucide-react"
 import { simulateFileValidation } from "@/lib/campaigns/data"
 
 export function AudienceStep() {
@@ -90,7 +90,6 @@ export function AudienceStep() {
                   className="p-0 h-auto text-sm"
                   onClick={handleDownloadTemplate}
                 >
-                  <Download className="w-3 h-3 mr-1" />
                   modelo de dados
                 </Button>
                 , depois envie o arquivo com os pacientes que receberão as mensagens

@@ -2,6 +2,7 @@
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
 import { CheckCircle2, AlertCircle, Info } from "lucide-react"
 import type { AudienceValidation } from "@/lib/campaigns/types"
 import { cn } from "@/lib/utils"
@@ -77,9 +78,9 @@ export function ValidationPanel({ validation }: ValidationPanelProps) {
             <Info className="h-4 w-4" />
             <AlertDescription className="text-xs">
               Alguns registros não puderam ser processados.{" "}
-              <button className="font-medium text-primary underline underline-offset-2">
+              <Button variant="link" className="p-0 h-auto text-xs">
                 Baixe o relatório
-              </button>{" "}
+              </Button>{" "}
               para ver os detalhes.
             </AlertDescription>
           </Alert>

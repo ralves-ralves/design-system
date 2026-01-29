@@ -2,6 +2,9 @@
 
 import * as React from "react"
 import type { CampaignState, CampaignAction } from "@/lib/campaigns/types"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { ArrowLeft } from "lucide-react"
 import { CampaignStepper } from "./CampaignStepper"
 import { CampaignFooter } from "./CampaignFooter"
 import { ObjectiveStep } from "./steps/ObjectiveStep"
@@ -140,23 +143,12 @@ export function CampaignWizard() {
         {/* Header */}
         <header className="sticky top-0 z-50 border-b bg-card">
           <div className="max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
-            <button className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-              <svg
-                className="w-4 h-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="m12 19-7-7 7-7" />
-                <path d="M19 12H5" />
-              </svg>
+            <Button variant="ghost" size="sm">
+              <ArrowLeft className="w-4 h-4 mr-2" />
               Campanhas
-            </button>
+            </Button>
             <h1 className="text-lg font-semibold text-foreground">Nova Campanha</h1>
-            <span className="px-2 py-1 text-xs font-medium rounded-md bg-yellow-100 text-yellow-700">
-              Rascunho
-            </span>
+            <Badge variant="warning">Rascunho</Badge>
           </div>
         </header>
 
