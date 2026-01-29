@@ -17,10 +17,28 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./tailwind-preset": {
+      "import": {
+        "types": "./dist/tailwind-preset.d.ts",
+        "default": "./dist/tailwind-preset.js"
+      },
+      "require": {
+        "types": "./dist/tailwind-preset.d.cts",
+        "default": "./dist/tailwind-preset.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nilohealth/design-system.git"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "sideEffects": [
     "**/*.css"
@@ -35,8 +53,8 @@
     "chromatic": "chromatic --exit-zero-on-changes"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18",
+    "react": ">=17",
+    "react-dom": ">=17",
     "tailwindcss": ">=4"
   },
   "dependencies": {
