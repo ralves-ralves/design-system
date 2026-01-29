@@ -1,5 +1,8 @@
 import type { Meta } from "@storybook/react"
 import React from "react"
+import { toast } from "sonner"
+import { useForm } from "react-hook-form"
+import { Bar, BarChart, XAxis, YAxis } from "recharts"
 
 // ─── Form Controls ──────────────────────────────────────────────────────────
 import { Button } from "../src/components/ui/button"
@@ -243,6 +246,25 @@ import {
 } from "../src/components/ui/conversation-item"
 import { QueueItem, QueueList } from "../src/components/ui/queue-item"
 import { QuickReply, QuickReplyGroup } from "../src/components/ui/quick-reply"
+
+// ─── Missing: Chart, Form, MultiSelect (standalone), Sonner ────────────────
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "../src/components/ui/chart"
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+} from "../src/components/ui/form"
+import { MultiSelect as MultiSelectStandalone } from "../src/components/ui/multi-select"
+import { Toaster } from "../src/components/ui/sonner"
 
 // ─── Modals ─────────────────────────────────────────────────────────────────
 import {
@@ -1979,6 +2001,268 @@ export const Modals = {
             onConfirm={(items) => console.log("Selected:", items)}
             trigger={<Button variant="outline">Multi Select List</Button>}
           />
+        </div>
+      </SubSection>
+    </div>
+  ),
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 9. CHART
+// ─────────────────────────────────────────────────────────────────────────────
+
+const chartData = [
+  { month: "Jan", appointments: 186, cancellations: 12 },
+  { month: "Feb", appointments: 205, cancellations: 8 },
+  { month: "Mar", appointments: 237, cancellations: 15 },
+  { month: "Apr", appointments: 198, cancellations: 10 },
+  { month: "May", appointments: 256, cancellations: 7 },
+  { month: "Jun", appointments: 224, cancellations: 11 },
+]
+
+const chartConfig: ChartConfig = {
+  appointments: {
+    label: "Appointments",
+    color: "var(--primary)",
+  },
+  cancellations: {
+    label: "Cancellations",
+    color: "var(--destructive)",
+  },
+}
+
+export const Charts = {
+  render: () => (
+    <div className="space-y-8 p-6 max-w-4xl">
+      <SectionTitle>Chart</SectionTitle>
+
+      <SubSection title="Bar Chart">
+        <Card>
+          <CardHeader>
+            <CardTitle>Appointments Overview</CardTitle>
+            <CardDescription>January - June 2026</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig} className="h-[300px] w-full">
+              <BarChart data={chartData} accessibilityLayer>
+                <XAxis dataKey="month" tickLine={false} axisLine={false} />
+                <YAxis tickLine={false} axisLine={false} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar dataKey="appointments" fill="var(--color-appointments)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="cancellations" fill="var(--color-cancellations)" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      </SubSection>
+    </div>
+  ),
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 10. FORM (React Hook Form integration)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function FormExample() {
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      notes: "",
+    },
+  })
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit((data) => alert(JSON.stringify(data, null, 2)))} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="name"
+          rules={{ required: "Name is required" }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Patient Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Maria Silva" {...field} />
+              </FormControl>
+              <FormDescription>Full name as it appears on the health card.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          rules={{
+            required: "Email is required",
+            pattern: { value: /^\S+@\S+$/, message: "Invalid email" },
+          }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="maria@example.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="notes"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Notes</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Additional observations..." {...field} />
+              </FormControl>
+              <FormDescription>Optional clinical notes.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
+  )
+}
+
+export const FormIntegration = {
+  render: () => (
+    <div className="space-y-8 p-6 max-w-lg">
+      <SectionTitle>Form (React Hook Form)</SectionTitle>
+
+      <SubSection title="Validated Form">
+        <Card>
+          <CardHeader>
+            <CardTitle>New Patient</CardTitle>
+            <CardDescription>Fill out the form below. Try submitting empty to see validation.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <FormExample />
+          </CardContent>
+        </Card>
+      </SubSection>
+    </div>
+  ),
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 11. MULTI-SELECT (Standalone)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const specialtyOptions = [
+  { value: "cardiology", label: "Cardiology" },
+  { value: "dermatology", label: "Dermatology" },
+  { value: "endocrinology", label: "Endocrinology" },
+  { value: "gastroenterology", label: "Gastroenterology" },
+  { value: "neurology", label: "Neurology" },
+  { value: "oncology", label: "Oncology" },
+  { value: "orthopedics", label: "Orthopedics" },
+  { value: "pediatrics", label: "Pediatrics" },
+  { value: "psychiatry", label: "Psychiatry" },
+  { value: "urology", label: "Urology", disabled: true },
+]
+
+export const MultiSelectStandaloneStory = {
+  name: "MultiSelect (Standalone)",
+  render: () => (
+    <div className="space-y-8 p-6 max-w-lg">
+      <SectionTitle>MultiSelect (Standalone)</SectionTitle>
+
+      <SubSection title="Default">
+        <div className="space-y-4">
+          <Label>Specialties</Label>
+          <MultiSelectStandalone
+            options={specialtyOptions}
+            placeholder="Select specialties..."
+            searchPlaceholder="Search specialties..."
+            emptyMessage="No specialty found."
+          />
+        </div>
+      </SubSection>
+
+      <SubSection title="With Default Values">
+        <div className="space-y-4">
+          <Label>Pre-selected Specialties</Label>
+          <MultiSelectStandalone
+            options={specialtyOptions}
+            defaultValue={["cardiology", "neurology", "psychiatry"]}
+            placeholder="Select specialties..."
+          />
+        </div>
+      </SubSection>
+
+      <SubSection title="Disabled Option">
+        <p className="text-sm text-muted-foreground mb-2">
+          &quot;Urology&quot; is disabled in the list.
+        </p>
+        <MultiSelectStandalone
+          options={specialtyOptions}
+          placeholder="Select specialties..."
+        />
+      </SubSection>
+    </div>
+  ),
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 12. SONNER (Toast Notifications)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const ToastNotifications = {
+  name: "Sonner (Toasts)",
+  render: () => (
+    <div className="space-y-8 p-6 max-w-lg">
+      <SectionTitle>Sonner (Toast Notifications)</SectionTitle>
+      <Toaster position="bottom-right" />
+
+      <SubSection title="Toast Variants">
+        <div className="flex flex-wrap gap-3">
+          <Button
+            variant="default"
+            onClick={() => toast.success("Patient record saved successfully.")}
+          >
+            Success Toast
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={() => toast.error("Failed to save patient record.")}
+          >
+            Error Toast
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => toast.warning("Session will expire in 5 minutes.")}
+          >
+            Warning Toast
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => toast.info("New message from Dr. Santos.")}
+          >
+            Info Toast
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => toast.loading("Uploading document...")}
+          >
+            Loading Toast
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() =>
+              toast("Appointment scheduled", {
+                description: "Monday, January 30, 2026 at 9:00 AM",
+                action: {
+                  label: "Undo",
+                  onClick: () => toast.info("Appointment cancelled."),
+                },
+              })
+            }
+          >
+            Toast with Action
+          </Button>
         </div>
       </SubSection>
     </div>
