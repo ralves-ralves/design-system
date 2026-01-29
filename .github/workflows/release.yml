@@ -56,4 +56,4 @@ jobs:
         if: steps.tag.outputs.exists == 'false'
         run: gh release create "v${{ steps.pkg.outputs.version }}" --generate-notes
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.NILO_GITHUB_TOKEN }}
