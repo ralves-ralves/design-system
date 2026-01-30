@@ -8,7 +8,7 @@ const slaBadgeVariants = cva(
     variants: {
       variant: {
         critical: "text-destructive border-destructive bg-destructive/5",
-        warning: "text-amber-600 border-amber-600 bg-amber-600/5",
+        warning: "text-warning border-warning bg-warning/5",
         ok: "text-success border-success bg-success/5",
       },
     },

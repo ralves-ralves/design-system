@@ -3,9 +3,26 @@
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
+import { cva, type VariantProps } from "class-variance-authority"
 import { Check, ChevronDown, ChevronUp } from "lucide-react"
 
 import { cn } from "../../lib/utils"
+
+const selectTriggerVariants = cva(
+  "flex w-full items-center justify-between rounded-md border border-input bg-background ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:flex-1 [&>span]:truncate [&>span]:text-left",
+  {
+    variants: {
+      size: {
+        sm: "h-8 px-2.5 text-xs",
+        default: "h-10 px-3 py-2 text-sm",
+        lg: "h-11 px-4 text-sm",
+      },
+    },
+    defaultVariants: {
+      size: "default",
+    },
+  }
+)
 
 const Select = SelectPrimitive.Root
 
@@ -23,21 +40,22 @@ SelectGroup.displayName = SelectPrimitive.Group.displayName
 
 const SelectValue = SelectPrimitive.Value
 
+export interface SelectTriggerProps
+  extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
+    VariantProps<typeof selectTriggerVariants> {}
+
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+  SelectTriggerProps
+>(({ className, children, size, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
-    className={cn(
-      "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
-      className
-    )}
+    className={cn(selectTriggerVariants({ size }), className)}
     {...props}
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className="h-4 w-4 opacity-50" />
+      <ChevronDown className={cn("opacity-50", size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4")} />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
@@ -227,10 +245,14 @@ function MultiSelect({
   )
 }
 
+export interface MultiSelectTriggerProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof selectTriggerVariants> {}
+
 const MultiSelectTrigger = React.forwardRef<
   HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement>
->(({ className, children, ...props }, ref) => {
+  MultiSelectTriggerProps
+>(({ className, children, size, ...props }, ref) => {
   const { disabled } = useMultiSelect()
   return (
     <PopoverPrimitive.Trigger asChild>
@@ -239,13 +261,14 @@ const MultiSelectTrigger = React.forwardRef<
         type="button"
         disabled={disabled || props.disabled}
         className={cn(
-          "flex h-10 w-full items-center justify-between gap-2 overflow-hidden rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+          selectTriggerVariants({ size }),
+          "gap-2 overflow-hidden",
           className
         )}
         {...props}
       >
         {children}
-        <ChevronDown className="h-4 w-4 opacity-50 shrink-0" />
+        <ChevronDown className={cn("opacity-50 shrink-0", size === "sm" ? "h-3.5 w-3.5" : "h-4 w-4")} />
       </button>
     </PopoverPrimitive.Trigger>
   )
@@ -401,4 +424,5 @@ export {
   MultiSelectGroup,
   MultiSelectLabel,
   MultiSelectItem,
+  selectTriggerVariants,
 }
