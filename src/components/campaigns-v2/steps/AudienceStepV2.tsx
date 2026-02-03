@@ -60,7 +60,7 @@ export function AudienceStepV2() {
           Envie a lista de pacientes
         </h1>
         <p className="text-muted-foreground">
-          Faca upload de um arquivo CSV com os dados dos pacientes para esta campanha.
+          Faça upload de um arquivo CSV com os dados dos pacientes para esta campanha.
         </p>
       </div>
 
@@ -78,7 +78,7 @@ export function AudienceStepV2() {
             onFilesAdded={handleFilesAdded}
             onFileRemoved={handleFileRemoved}
             files={files}
-            hint="CSV ou XLSX, ate 10MB"
+            hint="CSV ou XLSX, até 10MB"
           />
 
           {/* Helper link */}
@@ -94,7 +94,7 @@ export function AudienceStepV2() {
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
               O arquivo deve conter as colunas: nome, telefone (com DDD), e data de nascimento.
-              Telefones invalidos ou opt-outs serao automaticamente excluidos.
+              Telefones inválidos ou opt-outs serão automaticamente excluídos.
             </AlertDescription>
           </Alert>
         </div>

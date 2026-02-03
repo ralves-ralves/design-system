@@ -22,19 +22,19 @@ export function CampaignFooterV2({ canProceed, onBack, onNext }: CampaignFooterV
           : "Selecione um objetivo"
       case 2:
         return state.audienceValidation
-          ? `${state.audienceValidation.valid.toLocaleString("pt-BR")} pacientes validos`
-          : "Faca upload da lista de pacientes"
+          ? `${state.audienceValidation.valid.toLocaleString("pt-BR")} pacientes válidos`
+          : "Faça upload da lista de pacientes"
       case 3:
         return state.selectedCampaign
           ? `Campanha: ${state.selectedCampaign.name}`
           : "Selecione uma campanha"
       case 4:
         if (state.validation?.metaTierError) {
-          return "Ajuste a distribuicao para continuar"
+          return "Ajuste a distribuição para continuar"
         }
         return state.distributionType
-          ? "Distribuicao configurada"
-          : "Configure a distribuicao de envios"
+          ? "Distribuição configurada"
+          : "Configure a distribuição de envios"
       case 5:
         return "Revise e lance a campanha"
       default:
@@ -70,7 +70,7 @@ export function CampaignFooterV2({ canProceed, onBack, onNext }: CampaignFooterV
           <Button onClick={onNext} disabled={!canProceed}>
             {isReviewStep ? (
               <>
-                Lancar Campanha
+                Lançar Campanha
                 <Rocket className="w-4 h-4 ml-2" />
               </>
             ) : (

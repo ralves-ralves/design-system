@@ -11,16 +11,41 @@ import {
 } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
 import { workHours, getMinDate } from "@/lib/campaigns/data-v2"
-import type { SingleBatchConfig as SingleBatchConfigType } from "@/lib/campaigns/types-v2"
+import type { WorkdayDailyConfig as WorkdayDailyConfigType } from "@/lib/campaigns/types-v2"
 
-interface SingleBatchConfigProps {
-  config: Partial<SingleBatchConfigType>
+interface WorkdayDailyConfigProps {
+  config: Partial<WorkdayDailyConfigType>
   audienceSize: number
-  onChange: (config: Partial<SingleBatchConfigType>) => void
+  onChange: (config: Partial<WorkdayDailyConfigType>) => void
 }
 
-export function SingleBatchConfig({ config, audienceSize, onChange }: SingleBatchConfigProps) {
+// Calculate workdays and completion
+function calculateDistribution(startDate: string, audienceSize: number, sendsPerDay: number) {
+  const totalWorkdays = Math.ceil(audienceSize / sendsPerDay)
+
+  // Calculate completion date (add workdays)
+  const start = new Date(startDate)
+  let daysAdded = 0
+  const current = new Date(start)
+
+  while (daysAdded < totalWorkdays) {
+    current.setDate(current.getDate() + 1)
+    const day = current.getDay()
+    if (day !== 0 && day !== 6) daysAdded++
+  }
+
+  return {
+    totalWorkdays,
+    completionDate: current.toLocaleDateString("pt-BR"),
+  }
+}
+
+export function WorkdayDailyConfig({ config, audienceSize, onChange }: WorkdayDailyConfigProps) {
   const minDate = getMinDate()
+
+  const distribution = config.startDate && config.sendsPerDay
+    ? calculateDistribution(config.startDate, audienceSize, config.sendsPerDay)
+    : null
 
   // Filter times if today is selected
   const getAvailableTimes = () => {
@@ -40,9 +65,20 @@ export function SingleBatchConfig({ config, audienceSize, onChange }: SingleBatc
   return (
     <Card className="shadow-[var(--shadow-sm)] transition-nilo">
       <CardContent className="pt-6 space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">
-            <Label>Data de inicio</Label>
+            <Label>Envios por dia</Label>
+            <Input
+              type="number"
+              min={1}
+              max={audienceSize}
+              placeholder="Ex: 500"
+              value={config.sendsPerDay ?? ""}
+              onChange={(e) => onChange({ ...config, sendsPerDay: parseInt(e.target.value) || 0 })}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Data de início</Label>
             <Input
               type="date"
               min={minDate}
@@ -51,7 +87,7 @@ export function SingleBatchConfig({ config, audienceSize, onChange }: SingleBatc
             />
           </div>
           <div className="space-y-2">
-            <Label>Horario de inicio</Label>
+            <Label>Horário</Label>
             <Select
               value={config.startTime ?? ""}
               onValueChange={(value) => onChange({ ...config, startTime: value })}
@@ -67,20 +103,22 @@ export function SingleBatchConfig({ config, audienceSize, onChange }: SingleBatc
                 ))}
               </SelectContent>
             </Select>
-            <p className="text-xs text-muted-foreground">Horario de Brasilia (GMT-3)</p>
+            <p className="text-xs text-muted-foreground">GMT-3</p>
           </div>
         </div>
 
-        {/* Summary */}
-        {config.startDate && config.startTime && (
+        {/* Calculated distribution summary */}
+        {distribution && config.startTime && config.sendsPerDay && (
           <div className="border-t pt-4 space-y-1 text-sm animate-in fade-in-0 slide-in-from-top-2 duration-300">
-            <p className="font-medium">Resumo:</p>
+            <p className="font-medium">Distribuição calculada:</p>
             <p className="text-muted-foreground">
-              • {audienceSize.toLocaleString("pt-BR")} pacientes receberao a Mensagem 1 em{" "}
-              {new Date(config.startDate).toLocaleDateString("pt-BR")} as {config.startTime}
+              • {config.sendsPerDay.toLocaleString("pt-BR")} envios/dia
             </p>
             <p className="text-muted-foreground">
-              • Follow-ups enviados automaticamente conforme a sequencia
+              • {distribution.totalWorkdays} dias úteis (Seg-Sex)
+            </p>
+            <p className="text-muted-foreground">
+              • Envios iniciais completos até: {distribution.completionDate}
             </p>
           </div>
         )}

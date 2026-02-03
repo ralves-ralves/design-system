@@ -11,17 +11,28 @@ import type {
 } from "./types-v2"
 import type { CampaignMessage } from "./types"
 
-// Available work hours (07:00-20:00 in 30min increments)
+// Available work hours (07:00-20:00 in full-hour increments)
 export const workHours = [
-  "07:00", "07:30", "08:00", "08:30", "09:00", "09:30",
-  "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
-  "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
-  "16:00", "16:30", "17:00", "17:30", "18:00", "18:30",
-  "19:00", "19:30", "20:00",
+  "07:00", "08:00", "09:00", "10:00", "11:00", "12:00",
+  "13:00", "14:00", "15:00", "16:00", "17:00", "18:00",
+  "19:00", "20:00",
 ]
 
-// Days of month for monthly distribution
-export const daysOfMonth = Array.from({ length: 28 }, (_, i) => i + 1)
+// Ordinal weekday options for monthly distribution
+export const ordinalOptions: { value: number; label: string }[] = [
+  { value: 1, label: "1ª" },
+  { value: 2, label: "2ª" },
+  { value: 3, label: "3ª" },
+  { value: 4, label: "4ª" },
+]
+
+export const weekdayOptions: { value: number; label: string }[] = [
+  { value: 1, label: "segunda-feira" },
+  { value: 2, label: "terça-feira" },
+  { value: 3, label: "quarta-feira" },
+  { value: 4, label: "quinta-feira" },
+  { value: 5, label: "sexta-feira" },
+]
 
 // Month names in Portuguese
 const monthNames = [
@@ -107,6 +118,33 @@ function formatDate(date: Date): string {
   return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })
 }
 
+// Get the Nth weekday of a given month (e.g. 2nd Wednesday of March 2026)
+// ordinal: 1-4 (1st, 2nd, 3rd, 4th)
+// weekday: 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri
+export function getNthWeekdayOfMonth(yearMonth: string, ordinal: number, weekday: number): Date {
+  const [year, month] = yearMonth.split("-").map(Number)
+  // JS Date: month is 0-indexed, getDay() returns 0=Sun, 1=Mon...6=Sat
+  const jsWeekday = weekday % 7 // Convert: 1=Mon->1, 2=Tue->2...5=Fri->5
+
+  const firstOfMonth = new Date(year, month - 1, 1)
+  const firstDayOfWeek = firstOfMonth.getDay() // 0=Sun...6=Sat
+
+  // Find the first occurrence of the target weekday
+  let dayOfMonth = 1 + ((jsWeekday - firstDayOfWeek + 7) % 7)
+
+  // Add weeks to get the Nth occurrence
+  dayOfMonth += (ordinal - 1) * 7
+
+  return new Date(year, month - 1, dayOfMonth)
+}
+
+// Format ordinal weekday to human-readable label
+export function formatOrdinalWeekday(ordinal: number, weekday: number): string {
+  const ordinalLabels = ["1ª", "2ª", "3ª", "4ª"]
+  const weekdayLabels = ["", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira"]
+  return `${ordinalLabels[ordinal - 1]} ${weekdayLabels[weekday]}`
+}
+
 // Calculate sequence timeline based on distribution config
 export function calculateTimeline(
   config: DistributionConfig,
@@ -137,7 +175,7 @@ export function calculateTimeline(
       distributionDays = Math.ceil(audienceSize / 750) * 7 // Spread over weeks
       break
     case "monthly":
-      startDate = new Date(`${config.startMonth}-${String(config.dayOfMonth).padStart(2, "0")}`)
+      startDate = getNthWeekdayOfMonth(config.startMonth, config.ordinal, config.weekday)
       distributionDays = Math.ceil(audienceSize / 5000) * 30 // Spread over months
       break
   }

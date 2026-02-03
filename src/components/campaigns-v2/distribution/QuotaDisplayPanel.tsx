@@ -24,7 +24,7 @@ export function QuotaDisplayPanel({ quota, showCampaignEstimate = false }: Quota
             <span className="font-medium">{quota.monthlyQuota.toLocaleString("pt-BR")}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Ja enviadas (este mes):</span>
+            <span className="text-muted-foreground">Já enviadas (este mês):</span>
             <span className="font-medium">{quota.alreadySent.toLocaleString("pt-BR")}</span>
           </div>
           <div className="flex justify-between">
@@ -33,7 +33,7 @@ export function QuotaDisplayPanel({ quota, showCampaignEstimate = false }: Quota
           </div>
           <div className="border-t pt-2">
             <div className="flex justify-between font-semibold">
-              <span>Disponiveis:</span>
+              <span>Disponíveis:</span>
               <span className="text-primary">{quota.available.toLocaleString("pt-BR")} mensagens</span>
             </div>
           </div>

@@ -22,7 +22,7 @@ interface WeeklyConfigProps {
 
 const weekdays: { value: Weekday; label: string; short: string }[] = [
   { value: "mon", label: "Segunda", short: "Seg" },
-  { value: "tue", label: "Terca", short: "Ter" },
+  { value: "tue", label: "Terça", short: "Ter" },
   { value: "wed", label: "Quarta", short: "Qua" },
   { value: "thu", label: "Quinta", short: "Qui" },
   { value: "fri", label: "Sexta", short: "Sex" },
@@ -100,7 +100,7 @@ export function WeeklyConfig({ config, audienceSize, onChange }: WeeklyConfigPro
             />
           </div>
           <div className="space-y-2">
-            <Label>Data de inicio</Label>
+            <Label>Data de início</Label>
             <Input
               type="date"
               min={minDate}
@@ -109,7 +109,7 @@ export function WeeklyConfig({ config, audienceSize, onChange }: WeeklyConfigPro
             />
           </div>
           <div className="space-y-2">
-            <Label>Horario</Label>
+            <Label>Horário</Label>
             <Select
               value={config.startTime ?? ""}
               onValueChange={(value) => onChange({ ...config, startTime: value })}
@@ -151,7 +151,7 @@ export function WeeklyConfig({ config, audienceSize, onChange }: WeeklyConfigPro
         {/* Calculated distribution summary */}
         {distribution && config.startTime && config.sendsPerDay && (
           <div className="border-t pt-4 space-y-1 text-sm animate-in fade-in-0 slide-in-from-top-2 duration-300">
-            <p className="font-medium">Distribuicao calculada:</p>
+            <p className="font-medium">Distribuição calculada:</p>
             <p className="text-muted-foreground">
               • {config.sendsPerDay.toLocaleString("pt-BR")} envios/dia ({distribution.selectedDaysLabel})
             </p>
@@ -159,7 +159,7 @@ export function WeeklyConfig({ config, audienceSize, onChange }: WeeklyConfigPro
               • {distribution.weeksNeeded} semanas de envio
             </p>
             <p className="text-muted-foreground">
-              • Envios iniciais completos ate: {distribution.completionDate}
+              • Envios iniciais completos até: {distribution.completionDate}
             </p>
           </div>
         )}

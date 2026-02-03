@@ -11,19 +11,19 @@ interface MetaAccountHealthProps {
 // Using design system semantic colors (from globals.css)
 const qualityConfig = {
   green: {
-    label: "Saudavel",
+    label: "Saudável",
     variant: "success" as const,
     Icon: CheckCircle2,
     iconColor: "text-primary-600 dark:text-primary-400",
   },
   yellow: {
-    label: "Atencao",
+    label: "Atenção",
     variant: "warning" as const,
     Icon: AlertCircle,
     iconColor: "text-amber-600 dark:text-amber-400",
   },
   red: {
-    label: "Critico",
+    label: "Crítico",
     variant: "destructive" as const,
     Icon: XCircle,
     iconColor: "text-red-600 dark:text-red-400",

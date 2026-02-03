@@ -10,10 +10,10 @@ interface CampaignStepperV2Props {
 
 const steps = [
   { number: 1, label: "Objetivo" },
-  { number: 2, label: "Publico" },
+  { number: 2, label: "Público" },
   { number: 3, label: "Mensagem" },
-  { number: 4, label: "Distribuicao" },
-  { number: 5, label: "Revisao" },
+  { number: 4, label: "Distribuição" },
+  { number: 5, label: "Revisão" },
 ]
 
 export function CampaignStepperV2({ currentStep, onStepClick }: CampaignStepperV2Props) {

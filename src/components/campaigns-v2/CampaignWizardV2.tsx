@@ -125,7 +125,7 @@ function canProceed(state: CampaignStateV2): boolean {
           if (!config.startDate || !config.startTime || !config.selectedDays?.length) return false
           break
         case "monthly":
-          if (!config.dayOfMonth || !config.startTime || !config.startMonth) return false
+          if (!config.ordinal || !config.weekday || !config.startTime || !config.startMonth) return false
           break
       }
       // Meta tier error is BLOCKING

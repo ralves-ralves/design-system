@@ -30,12 +30,12 @@ export function DistributionValidation({
           <AlertTitle>Limite de Envio Excedido</AlertTitle>
           <AlertDescription className="space-y-2">
             <p>
-              Esta distribuicao excede seu limite diario de envio do WhatsApp (
-              {validation.metaDailyLimit?.toLocaleString("pt-BR")}/dia) e nao sera aprovada pela Meta.
+              Esta distribuição excede seu limite diário de envio do WhatsApp (
+              {validation.metaDailyLimit?.toLocaleString("pt-BR")}/dia) e não será aprovada pela Meta.
             </p>
             <p>
-              Por favor, reduza o volume diario escolhendo uma opcao de distribuicao diferente ou
-              estendendo a duracao da campanha.
+              Por favor, reduza o volume diário escolhendo uma opção de distribuição diferente ou
+              estendendo a duração da campanha.
             </p>
             <div className="flex gap-4 text-sm mt-2">
               <span>
@@ -56,10 +56,10 @@ export function DistributionValidation({
           <AlertTitle>Alerta de Cota</AlertTitle>
           <AlertDescription className="space-y-3">
             <p>
-              Esta campanha usara mais mensagens do que sua cota disponivel de{" "}
+              Esta campanha usará mais mensagens do que sua cota disponível de{" "}
               {validation.exceedsMonth} ({validation.availableQuota?.toLocaleString("pt-BR")}).
-              Consulte seu executivo de conta sobre as condicoes.
-              Voce pode continuar ou ajustar a distribuicao.
+              Consulte seu executivo de conta sobre as condições.
+              Você pode continuar ou ajustar a distribuição.
             </p>
             <div className="flex gap-2 justify-end">
               <Button variant="outline" size="sm" onClick={onAcknowledgeWarning}>
@@ -75,7 +75,7 @@ export function DistributionValidation({
         <Alert variant="info">
           <Info className="h-4 w-4" />
           <AlertDescription>
-            Voce reconheceu que esta campanha pode exceder a cota disponivel.
+            Você reconheceu que esta campanha pode exceder a cota disponível.
           </AlertDescription>
         </Alert>
       )}

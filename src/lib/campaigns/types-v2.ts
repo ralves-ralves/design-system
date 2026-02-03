@@ -42,7 +42,8 @@ export interface WeeklyConfig {
 
 export interface MonthlyConfig {
   type: "monthly"
-  dayOfMonth: number // 1-31
+  ordinal: number // 1-4 (1ª, 2ª, 3ª, 4ª)
+  weekday: number // 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri
   startTime: string
   startMonth: string // YYYY-MM format
   sendsPerDay: number // User-defined sends per day

@@ -8,8 +8,8 @@ import { Badge } from "@/components/ui/badge"
 import { Info } from "lucide-react"
 
 const distributionTypeLabels = {
-  single_batch: "Envio Unico",
-  workday_daily: "Diario (dias uteis)",
+  single_batch: "Envio Único",
+  workday_daily: "Diário (dias úteis)",
   weekly: "Semanal",
   monthly: "Mensal",
 }
@@ -30,7 +30,9 @@ export function ReviewStepV2() {
         const days = state.distributionConfig.selectedDays?.join(", ") ?? ""
         return `${days} a partir de ${new Date(state.distributionConfig.startDate).toLocaleDateString("pt-BR")} as ${state.distributionConfig.startTime}`
       case "monthly":
-        return `Dia ${state.distributionConfig.dayOfMonth} a partir de ${state.distributionConfig.startMonth} as ${state.distributionConfig.startTime}`
+        const ordLabels = ["1ª", "2ª", "3ª", "4ª"]
+        const wdLabels = ["", "segunda", "terça", "quarta", "quinta", "sexta"]
+        return `${ordLabels[state.distributionConfig.ordinal - 1]} ${wdLabels[state.distributionConfig.weekday]} de cada mês às ${state.distributionConfig.startTime}`
       default:
         return null
     }
@@ -41,10 +43,10 @@ export function ReviewStepV2() {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-foreground mb-2">
-          Revisao final
+          Revisão final
         </h1>
         <p className="text-muted-foreground">
-          Confira todos os detalhes antes de lancar a campanha.
+          Confira todos os detalhes antes de lançar a campanha.
         </p>
       </div>
 
@@ -70,7 +72,7 @@ export function ReviewStepV2() {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Publico
+              Público
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -81,7 +83,7 @@ export function ReviewStepV2() {
               </span>
             </div>
             <div className="flex justify-between py-2 border-b">
-              <span className="text-sm text-muted-foreground">Validos para envio</span>
+              <span className="text-sm text-muted-foreground">Válidos para envio</span>
               <span className="font-medium text-primary">
                 {state.audienceValidation?.valid.toLocaleString("pt-BR") ?? "—"}
               </span>
@@ -115,7 +117,7 @@ export function ReviewStepV2() {
               <div className="pt-2">
                 <div className="p-4 bg-muted/50 rounded-lg">
                   <p className="text-xs font-medium text-muted-foreground mb-3">
-                    Mensagens que serao enviadas
+                    Mensagens que serão enviadas
                   </p>
                   <MessageTimeline messages={state.selectedCampaign.messages} />
                 </div>
@@ -128,12 +130,12 @@ export function ReviewStepV2() {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Distribuicao de Envios
+              Distribuição de Envios
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between py-2 border-b">
-              <span className="text-sm text-muted-foreground">Tipo de distribuicao</span>
+              <span className="text-sm text-muted-foreground">Tipo de distribuição</span>
               <span className="font-medium text-foreground">
                 {state.distributionType ? distributionTypeLabels[state.distributionType] : "—"}
               </span>
@@ -147,7 +149,7 @@ export function ReviewStepV2() {
             {state.sequenceTimeline && (
               <>
                 <div className="flex justify-between py-2 border-b">
-                  <span className="text-sm text-muted-foreground">Duracao total</span>
+                  <span className="text-sm text-muted-foreground">Duração total</span>
                   <span className="font-medium text-foreground">
                     {state.sequenceTimeline.totalDuration} dias
                   </span>
@@ -172,8 +174,8 @@ export function ReviewStepV2() {
         <Alert variant="info">
           <Info className="h-4 w-4" />
           <AlertDescription>
-            Ao lancar a campanha, as mensagens serao enviadas automaticamente de acordo
-            com a sequencia e distribuicao configuradas.
+            Ao lançar a campanha, as mensagens serão enviadas automaticamente de acordo
+            com a sequência e distribuição configuradas.
           </AlertDescription>
         </Alert>
       </div>

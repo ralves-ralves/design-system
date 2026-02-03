@@ -16,23 +16,23 @@ const distributionOptions: {
 }[] = [
   {
     value: "single_batch",
-    label: "Envio Unico",
+    label: "Envio Único",
     description: "Envie todas as mensagens iniciais de uma vez",
   },
   {
     value: "workday_daily",
-    label: "Diario (dias uteis)",
+    label: "Diário (dias úteis)",
     description: "Distribua igualmente entre Seg-Sex",
   },
   {
     value: "weekly",
     label: "Semanal",
-    description: "Envie em dias especificos da semana",
+    description: "Envie em dias específicos da semana",
   },
   {
     value: "monthly",
     label: "Mensal",
-    description: "Envie uma vez por mes em um dia especifico",
+    description: "Envie uma vez por mês em um dia específico",
   },
 ]
 

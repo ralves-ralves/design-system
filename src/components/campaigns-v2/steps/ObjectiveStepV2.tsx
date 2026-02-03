@@ -20,10 +20,10 @@ export function ObjectiveStepV2() {
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-2xl font-semibold text-foreground mb-2">
-          Qual e o objetivo da sua campanha?
+          Qual é o objetivo da sua campanha?
         </h1>
         <p className="text-muted-foreground">
-          Selecione o tipo de comunicacao que voce deseja enviar.
+          Selecione o tipo de comunicação que você deseja enviar.
         </p>
       </div>
 

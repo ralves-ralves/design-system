@@ -1,8 +1,8 @@
 import { CampaignWizardV2 } from "@/components/campaigns-v2/CampaignWizardV2"
 
 export const metadata = {
-  title: "Nova Campanha v2 - Nilo Saude",
-  description: "Crie uma nova campanha de saude com distribuicao de envios",
+  title: "Nova Campanha v2 - Nilo Saúde",
+  description: "Crie uma nova campanha de saúde com distribuição de envios",
 }
 
 export default function NewCampaignPageV2() {

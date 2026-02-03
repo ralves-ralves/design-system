@@ -39,7 +39,7 @@ function isConfigComplete(config: DistributionConfig | null): boolean {
     case "weekly":
       return Boolean(config.startDate && config.startTime && config.selectedDays?.length && config.sendsPerDay)
     case "monthly":
-      return Boolean(config.dayOfMonth && config.startTime && config.startMonth && config.sendsPerDay)
+      return Boolean(config.ordinal && config.weekday && config.startTime && config.startMonth && config.sendsPerDay)
     default:
       return false
   }
@@ -112,10 +112,10 @@ export function DistributionStep() {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-foreground mb-2">
-          Configure a distribuicao de envios
+          Configure a distribuição de envios
         </h1>
         <p className="text-muted-foreground">
-          Defina como e quando as mensagens serao enviadas.
+          Defina como e quando as mensagens serão enviadas.
         </p>
       </div>
 

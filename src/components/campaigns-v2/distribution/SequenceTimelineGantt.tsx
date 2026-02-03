@@ -85,13 +85,13 @@ export function SequenceTimelineGantt({
         <div className="border-t pt-4 space-y-2">
           <p className="text-sm font-medium">Resumo</p>
           <div className="grid grid-cols-2 gap-2 text-sm">
-            <div className="text-muted-foreground">Duracao total da campanha:</div>
+            <div className="text-muted-foreground">Duração total da campanha:</div>
             <div className="font-medium">{timeline.totalDuration} dias</div>
 
             <div className="text-muted-foreground">Envios iniciais:</div>
             <div className="font-medium">{timeline.initialSendsRange}</div>
 
-            <div className="text-muted-foreground">Ultimo follow-up completo:</div>
+            <div className="text-muted-foreground">Último follow-up completo:</div>
             <div className="font-medium">{timeline.lastFollowupDate}</div>
 
             <div className="text-muted-foreground">Total de mensagens (pior caso):</div>

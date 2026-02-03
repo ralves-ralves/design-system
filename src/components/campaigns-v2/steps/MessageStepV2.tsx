@@ -34,7 +34,7 @@ export function MessageStepV2() {
           Selecione a mensagem
         </h1>
         <p className="text-muted-foreground">
-          Escolha uma campanha de mensagens pre-configurada. O agendamento sera definido na proxima etapa.
+          Escolha uma campanha de mensagens pré-configurada. O agendamento será definido na próxima etapa.
         </p>
       </div>
 
