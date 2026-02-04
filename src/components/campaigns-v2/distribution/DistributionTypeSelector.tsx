@@ -17,22 +17,22 @@ const distributionOptions: {
   {
     value: "single_batch",
     label: "Envio Único",
-    description: "Envie todas as mensagens iniciais de uma vez",
+    description: "Envie para todos de uma vez: ideal para baixo volume",
   },
   {
     value: "workday_daily",
     label: "Diário (dias úteis)",
-    description: "Distribua igualmente entre Seg-Sex",
+    description: "Um lote por dia útil: distribui volume ao longo dos dias",
   },
   {
     value: "weekly",
     label: "Semanal",
-    description: "Envie em dias específicos da semana",
+    description: "Escolha dias da semana: controle fino do ritmo",
   },
   {
     value: "monthly",
     label: "Mensal",
-    description: "Envie uma vez por mês em um dia específico",
+    description: "Um lote por mês: para campanhas de alto volume distribuídas",
   },
 ]
 
