@@ -26,7 +26,7 @@ const markerColors = {
 
 function formatShortDate(isoDate: string): string {
   const date = new Date(isoDate + "T12:00:00")
-  return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })
+  return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })
 }
 
 export function SequenceTimelineGantt({
@@ -233,7 +233,7 @@ function BatchRow({
               className="absolute -translate-x-1/2 text-[10px] text-muted-foreground whitespace-nowrap"
               style={{ left: `${pct}%` }}
             >
-              {marker.label} {formatShortDate(marker.calendarDate)}
+              {formatShortDate(marker.calendarDate)}
             </span>
           )
         })}
