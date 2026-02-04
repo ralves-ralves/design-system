@@ -79,20 +79,30 @@ export interface MetaAccountHealth {
   sentToday: number
 }
 
-// Timeline wave for Gantt visualization
-export interface TimelineWave {
-  id: string
-  label: string // "D0", "D5", "D12"
+// A message marker within a patient batch (D0, D3, D5 etc.)
+export interface BatchMessageMarker {
+  dayOffset: number // 0, 3, 5...
+  label: string // "D0", "D3"
   description: string // "Inicial", "Follow-up 1"
-  startDate: string
-  endDate: string
-  messageCount: number
+  calendarDate: string // actual ISO date for this batch
   color: "primary" | "secondary" | "tertiary"
 }
 
-// Sequence timeline data
+// One patient batch row in the timeline
+export interface TimelineBatch {
+  id: string // "batch-0"
+  batchIndex: number
+  label: string // "Primeiro lote"
+  patientCount: number
+  startDate: string // D0 date (ISO)
+  endDate: string // last follow-up date (ISO)
+  messages: BatchMessageMarker[]
+}
+
+// Sequence timeline data (batch-based)
 export interface SequenceTimeline {
-  waves: TimelineWave[]
+  batches: TimelineBatch[]
+  totalBatchCount: number
   totalDuration: number // days
   initialSendsRange: string
   lastFollowupDate: string

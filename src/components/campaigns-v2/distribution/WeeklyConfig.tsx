@@ -62,11 +62,49 @@ export function WeeklyConfig({ config, audienceSize, onChange }: WeeklyConfigPro
     ? calculateDistribution(config.startDate, selectedDays, audienceSize, config.sendsPerDay)
     : null
 
+  // Map weekday labels to JS Date day numbers (0=Sun, 1=Mon, ...6=Sat)
+  const weekdayToJsDay: Record<Weekday, number> = {
+    mon: 1, tue: 2, wed: 3, thu: 4, fri: 5,
+  }
+
+  // Check if a date string falls on one of the selected weekdays
+  const isDateOnSelectedDay = (dateStr: string, days: Weekday[]) => {
+    if (days.length === 0) return true
+    const date = new Date(dateStr + "T12:00:00") // noon to avoid timezone issues
+    const jsDay = date.getDay()
+    return days.some((d) => weekdayToJsDay[d] === jsDay)
+  }
+
   const handleDayToggle = (day: Weekday, checked: boolean) => {
     const newDays = checked
       ? [...selectedDays, day]
       : selectedDays.filter((d) => d !== day)
-    onChange({ ...config, selectedDays: newDays })
+
+    // Reset start date if it no longer falls on a selected day (spec 5.4.3)
+    const updatedConfig: Partial<WeeklyConfigType> = { ...config, selectedDays: newDays }
+    if (config.startDate && newDays.length > 0 && !isDateOnSelectedDay(config.startDate, newDays)) {
+      updatedConfig.startDate = undefined
+    }
+
+    onChange(updatedConfig)
+  }
+
+  // Validate date selection: only accept dates matching selected weekdays
+  const handleDateChange = (dateStr: string) => {
+    if (selectedDays.length > 0 && !isDateOnSelectedDay(dateStr, selectedDays)) {
+      // Reject invalid date — find the next valid date from the selected one
+      const date = new Date(dateStr + "T12:00:00")
+      for (let i = 1; i <= 7; i++) {
+        const next = new Date(date)
+        next.setDate(next.getDate() + i)
+        const nextStr = next.toISOString().split("T")[0]
+        if (isDateOnSelectedDay(nextStr, selectedDays)) {
+          onChange({ ...config, startDate: nextStr })
+          return
+        }
+      }
+    }
+    onChange({ ...config, startDate: dateStr })
   }
 
   // Filter times if today is selected
@@ -84,19 +122,46 @@ export function WeeklyConfig({ config, audienceSize, onChange }: WeeklyConfigPro
 
   const availableTimes = getAvailableTimes()
 
+  // Auto-suggest default sendsPerDay (spec 5.4.3: audience ÷ estimated send days)
+  const suggestedDefault = selectedDays.length > 0
+    ? Math.ceil(audienceSize / (selectedDays.length * 4)) // ~4 weeks
+    : Math.ceil(audienceSize / 8) // fallback
+
   return (
     <Card className="shadow-[var(--shadow-sm)] transition-nilo">
       <CardContent className="pt-6 space-y-4">
+        {/* Weekday selection — shown FIRST per spec 5.4.3 */}
+        <div className="space-y-2">
+          <Label>Enviar em:</Label>
+          <div className="flex gap-4 flex-wrap">
+            {weekdays.map((day) => (
+              <label key={day.value} className="flex items-center gap-2 cursor-pointer">
+                <Checkbox
+                  checked={selectedDays.includes(day.value)}
+                  onCheckedChange={(checked) => handleDayToggle(day.value, !!checked)}
+                />
+                <span className="text-sm">{day.short}</span>
+              </label>
+            ))}
+          </div>
+          {selectedDays.length === 0 && (
+            <p className="text-xs text-destructive">Selecione pelo menos um dia</p>
+          )}
+        </div>
+
         <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">
-            <Label>Envios por dia</Label>
+            <Label>Envios por dia de envio</Label>
             <Input
               type="number"
               min={1}
               max={audienceSize}
-              placeholder="Ex: 500"
+              placeholder={`Sugerido: ${suggestedDefault.toLocaleString("pt-BR")}`}
               value={config.sendsPerDay ?? ""}
               onChange={(e) => onChange({ ...config, sendsPerDay: parseInt(e.target.value) || 0 })}
+              onFocus={(e) => {
+                if (!config.sendsPerDay) onChange({ ...config, sendsPerDay: suggestedDefault })
+              }}
             />
           </div>
           <div className="space-y-2">
@@ -105,8 +170,13 @@ export function WeeklyConfig({ config, audienceSize, onChange }: WeeklyConfigPro
               type="date"
               min={minDate}
               value={config.startDate ?? ""}
-              onChange={(e) => onChange({ ...config, startDate: e.target.value })}
+              onChange={(e) => handleDateChange(e.target.value)}
             />
+            {selectedDays.length > 0 && (
+              <p className="text-xs text-muted-foreground">
+                Apenas {selectedDays.map((d) => weekdays.find((w) => w.value === d)?.short).join(", ")}
+              </p>
+            )}
           </div>
           <div className="space-y-2">
             <Label>Horário</Label>
@@ -127,25 +197,6 @@ export function WeeklyConfig({ config, audienceSize, onChange }: WeeklyConfigPro
             </Select>
             <p className="text-xs text-muted-foreground">GMT-3</p>
           </div>
-        </div>
-
-        {/* Weekday selection */}
-        <div className="space-y-2">
-          <Label>Enviar em:</Label>
-          <div className="flex gap-4 flex-wrap">
-            {weekdays.map((day) => (
-              <label key={day.value} className="flex items-center gap-2 cursor-pointer">
-                <Checkbox
-                  checked={selectedDays.includes(day.value)}
-                  onCheckedChange={(checked) => handleDayToggle(day.value, !!checked)}
-                />
-                <span className="text-sm">{day.short}</span>
-              </label>
-            ))}
-          </div>
-          {selectedDays.length === 0 && (
-            <p className="text-xs text-destructive">Selecione pelo menos um dia</p>
-          )}
         </div>
 
         {/* Calculated distribution summary */}

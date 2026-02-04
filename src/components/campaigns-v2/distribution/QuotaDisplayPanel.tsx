@@ -13,7 +13,7 @@ export function QuotaDisplayPanel({ quota, showCampaignEstimate = false }: Quota
     <Card className="shadow-[var(--shadow-sm)] transition-nilo">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm font-semibold">
-          Cota de Mensagens - {quota.currentMonth}
+          Cota Contratual de Mensagens - {quota.currentMonth}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">

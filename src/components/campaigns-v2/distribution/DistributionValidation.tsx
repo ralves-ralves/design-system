@@ -45,6 +45,11 @@ export function DistributionValidation({
                 Limite: <strong>{validation.metaDailyLimit?.toLocaleString("pt-BR")} mensagens/dia</strong>
               </span>
             </div>
+            <div className="flex justify-end mt-2">
+              <Button variant="outline" size="sm" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                Ajustar Distribuição
+              </Button>
+            </div>
           </AlertDescription>
         </Alert>
       )}
@@ -62,6 +67,9 @@ export function DistributionValidation({
               Você pode continuar ou ajustar a distribuição.
             </p>
             <div className="flex gap-2 justify-end">
+              <Button variant="outline" size="sm" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                Ajustar Distribuição
+              </Button>
               <Button variant="outline" size="sm" onClick={onAcknowledgeWarning}>
                 Continuar mesmo assim
               </Button>

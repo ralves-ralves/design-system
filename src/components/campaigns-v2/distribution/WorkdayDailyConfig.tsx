@@ -43,6 +43,9 @@ function calculateDistribution(startDate: string, audienceSize: number, sendsPer
 export function WorkdayDailyConfig({ config, audienceSize, onChange }: WorkdayDailyConfigProps) {
   const minDate = getMinDate()
 
+  // Auto-suggest default sendsPerDay (spec 5.4.2: audience ÷ available workdays)
+  const suggestedDefault = Math.ceil(audienceSize / 10) // ~10 workdays in 2 weeks
+
   const distribution = config.startDate && config.sendsPerDay
     ? calculateDistribution(config.startDate, audienceSize, config.sendsPerDay)
     : null
@@ -72,9 +75,12 @@ export function WorkdayDailyConfig({ config, audienceSize, onChange }: WorkdayDa
               type="number"
               min={1}
               max={audienceSize}
-              placeholder="Ex: 500"
+              placeholder={`Sugerido: ${suggestedDefault.toLocaleString("pt-BR")}`}
               value={config.sendsPerDay ?? ""}
               onChange={(e) => onChange({ ...config, sendsPerDay: parseInt(e.target.value) || 0 })}
+              onFocus={(e) => {
+                if (!config.sendsPerDay) onChange({ ...config, sendsPerDay: suggestedDefault })
+              }}
             />
           </div>
           <div className="space-y-2">

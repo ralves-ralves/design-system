@@ -56,7 +56,7 @@ export function MetaAccountHealth({ health }: MetaAccountHealthProps) {
           <p className="font-semibold text-foreground">Conta Meta WhatsApp</p>
           <p className="text-sm text-muted-foreground">
             Tier {tier} • {health.dailySendingLimit.toLocaleString("pt-BR")} msgs/dia •{" "}
-            {health.sentToday.toLocaleString("pt-BR")} enviadas hoje
+            {health.sentToday.toLocaleString("pt-BR")} / {health.dailySendingLimit.toLocaleString("pt-BR")} enviadas hoje
           </p>
         </div>
       </div>

@@ -53,9 +53,11 @@ export function DistributionStep() {
   const messages = state.selectedCampaign?.messages ?? []
 
   // Mock data (would be fetched from API in real app)
+  // Quota recalculates when distribution config changes (per spec 5.2)
+  const completeConfig = isConfigComplete(state.distributionConfig) ? state.distributionConfig : null
   const quota = React.useMemo(
-    () => mockQuotaData(audienceSize, messages),
-    [audienceSize, messages]
+    () => mockQuotaData(audienceSize, messages, completeConfig),
+    [audienceSize, messages, completeConfig]
   )
   const metaHealth = React.useMemo(() => mockMetaHealth(), [])
 
